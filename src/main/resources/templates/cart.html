@@ -80,14 +80,33 @@
                 <th>單價</th>
                 <th>數量</th>
                 <th>小計</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${cart.items.values()}">
                 <td th:text="${item.productName}">iPhone 16</td>
                 <td th:text="${item.price}">45000</td>
-                <td th:text="${item.quantity}">1</td>
-                <td th:text="${item.getSubtotal()}">45000</td>
+                <td>
+                    <form th:action="@{/cart/update}" method="post" style="display: flex; align-items: center;">
+
+                        <input type="hidden" name="productId" th:value="${item.productId}">
+
+                        <input type="number" name="quantity" th:value="${item.quantity}"
+                               min="1" class="form-control form-control-sm"
+                               style="width: 70px; margin-right: 5px;">
+
+                        <button type="submit" class="btn btn-sm btn-outline-primary" title="更新數量">
+                            <i class="fas fa-sync-alt"></i> 更新
+                        </button>
+                    </form>
+                </td>                <td th:text="${item.getSubtotal()}">45000</td>
+                <td>
+                    <a th:href="@{/cart/remove(id=${item.productId})}"
+                       onclick="return confirm('確定要移除這個商品嗎？');">
+                        <i></i> 刪除
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>

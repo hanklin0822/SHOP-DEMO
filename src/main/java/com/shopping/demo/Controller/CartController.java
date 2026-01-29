@@ -74,8 +74,50 @@ public class CartController {
             redirectAttributes.addFlashAttribute("errorMessage", "庫存不足！(目前庫存:"+product.getStock() +")");
         }
 
-        session.setAttribute("cart", cart);
+        session.setAttribute("cart",  cart);
         return "redirect:/productlist";
+    }
+
+
+
+    @GetMapping("/cart/remove")
+    public String removeFromCart(@RequestParam("id")Integer id,HttpSession session) {
+        CartDTO cart=(CartDTO) session.getAttribute("cart");
+
+        if (cart != null && cart.getItems() != null) {
+
+            cart.getItems().remove(id);
+
+    }
+         return "redirect:/cart";
+    }
+
+    @PostMapping("/cart/update")
+    public String updateCart(@RequestParam("productId")Integer productId,
+                             @RequestParam("quantity")Integer quantity,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes){
+        Optional<Product> currentproduct=productService.getProductById(productId);
+
+        if (currentproduct.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "商品不存在！");
+            return "redirect:/cart";
+        }
+
+        Product product=currentproduct.get();
+        CartDTO cart = (CartDTO) session.getAttribute("cart");
+        if (cart != null && cart.getItems() != null) {
+        if(quantity>product.getStock()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "庫存不足！目前剩餘數量：" + product.getStock());
+        }else {
+            CartItemDTO item=cart.getItems().get(productId);
+            if (item != null) {
+                item.setQuantity(quantity);
+            }
+            }
+        }
+        return "redirect:/cart";
     }
 
     @GetMapping("/cart")
@@ -88,5 +130,7 @@ public class CartController {
 
         return "cart";
     }
+
+
 }
 
