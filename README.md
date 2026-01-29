@@ -19,23 +19,23 @@
   * `Admin`：擁有後台管理權限，可進行商品的 CRUD 操作。
   * `User`：僅能瀏覽前台商品、操作購物車與結帳。
 
-  ![登入畫面](screenshots/login.jpg)
+  ![登入畫面](src/screenshots/login.jpg)
 
 ### 2. 商品管理 (Product Management)
 * **前台瀏覽**：使用者可以瀏覽商品並加入購物車。
-  ![前台商品列表](screenshots/productlist.jpg)
+  ![前台商品列表](src/screenshots/productlist.jpg)
 
 * **後台管理**：管理員擁有「修改」與「刪除」的權限。
-  ![後台管理介面](screenshots/admin.jpg)
+  ![後台管理介面](src/screenshots/admin.jpg)
 
 ### 3. 購物車 (Shopping Cart)
 * 使用 **HttpSession** 實作購物車功能，即使刷新頁面也能保留商品。
 * 支援動態修改數量、移除商品與總金額自動計算。
-  ![購物車畫面](screenshots/car.jpg)
+  ![購物車畫面](src/screenshots/car.jpg)
 ### 4. 訂單處理 (Order Processing)
 * 結帳流程整合：將購物車內容轉換為正式訂單 (`Order`) 與訂單明細 (`OrderItem`)。
 * 庫存與邏輯檢查：防止無效訂單生成。
-![訂單列表](screenshots/order.jpg)
+![訂單列表](src/screenshots/order.jpg)
 
 ##  How to Run (如何執行)
 
