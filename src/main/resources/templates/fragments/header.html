@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
+<head>
+</head>
+<body>
+
+<nav th:fragment="navbar">
+  <style>
+    /* 這是專屬於 navbar 的 CSS 樣式 */
+    .navbar {
+        width: 100%;
+        background-color: #333; /* 深色背景 */
+        overflow: hidden; /* 確保內容不溢出 */
+        margin-bottom: 20px; /* 和下方內容保持一點距離 */
+        box-sizing: border-box; /* 確保 padding 不會撐開寬度 */
+    }
+    .navbar a {
+        float: left; /* 讓連結水平排列 */
+        display: block; /* 讓連結變成塊狀，可以撐開 padding */
+        color: white; /* 白色文字 */
+        text-align: center;
+        padding: 30px 50px; /* 上下 14px, 左右 20px 的內距 */
+        text-decoration: none; /* 移除底線 */
+        font-size: 17px;
+        font-family: sans-serif;
+    }
+    .navbar a:hover {
+        background-color: #575757; /* 滑鼠移上去時的背景色 */
+    }
+
+    .navbar form {
+        float: right; /* 維持靠右浮動 */
+        margin: 0; /* 移除外距 */
+        padding: 0; /* 移除內距 */
+    }
+
+    /* 針對登出按鈕本身的樣式 */
+    .navbar .logout-button {
+        display: block; /* 讓它可以設定 padding */
+        background: none; /* 移除按鈕預設背景 */
+        border: none; /* 移除按鈕預設邊框 */
+
+        /* 【關鍵】複製 .navbar a 的樣式 */
+        color: white;
+        text-align: center;
+        padding: 30px 50px; /* <--- 確保這裡的 padding 和 .navbar a 完全一樣！ */
+        text-decoration: none;
+        font-size: 17px;
+        font-family: sans-serif;
+        cursor: pointer; /* 滑鼠移上去是手指 */
+    }
+
+    /* 滑鼠移上去時的效果，也和 .navbar a 一樣 */
+    .navbar .logout-button:hover {
+        background-color: #575757;
+    }
+  </style>
+
+  <div class="navbar">
+    <a th:href="@{/productlist}">商店首頁</a>
+    <a th:href="@{/orders}">我的訂單</a>
+
+    <a th:href="@{/cart}">購物車</a>
+
+    <form sec:authorize="isAuthenticated()"
+          th:action="@{/logout}"
+          method="post"
+          style="float: right; margin: 0;">
+
+      <button type="submit" class="logout-button">
+        登出
+      </button>
+    </form>
+
+    <a sec:authorize="isAnonymous()"
+       th:href="@{/login}"
+       style="float: right;"> 登入
+    </a>
+  </div>
+</nav>
+
+</body>
+</html>

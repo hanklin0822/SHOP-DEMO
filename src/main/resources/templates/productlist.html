@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+
+    <title>商品列表</title>
+    <style>
+        /* 1. 修改 body 樣式 */
+        body {
+            font-family: sans-serif;
+            background-color: #f8f9fa; /* 讓整個網頁有個淺灰色背景 */
+            margin: 0; /* 移除 body 的所有外距 */
+            padding: 0; /* 移除 body 的所有內距 */
+        }
+
+        /* 2. 新增 .container 樣式 (用來包裹主要內容) */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto; /* 讓內容區置中 */
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 3. 底下的表格、標題樣式保持不變 */
+        h1 {
+            color: #333; /* 標題改回深灰色，更簡潔 */
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        thead {
+            background-color: #f2f2f2;
+        }
+
+        /* 4. 按鈕樣式保持不變 */
+        button[type="submit"] {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+
+<div class="container">
+    <div
+            th:if="${successMessage}"
+            th:text="${successMessage}"
+            style="color: green; background-color: #e6ffec; padding: 10px; border: 1px solid green; border-radius: 5px; margin-bottom: 15px;">
+        成功訊息
+    </div>
+
+    <div
+            th:if="${errorMessage}"
+            th:text="${errorMessage}"
+            style="color: red; background-color: #ffe6e6; padding: 10px; border: 1px solid red; border-radius: 5px; margin-bottom: 15px;">
+        錯誤訊息
+    </div>
+<h1>商品列表</h1>
+
+    <div sec:authorize="hasRole('ADMIN')" style="margin-bottom: 15px;">
+        <a href="#" th:href="@{/create}">新增商品</a>
+    </div>
+
+<table>
+    <thead>
+    <tr>
+        <th>商品名稱</th>
+        <th>價格</th>
+        <th>庫存</th>
+        <th>商品描述</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.name}">商品名稱 A</td>
+        <td th:text="${product.price}">100</td>
+        <td th:text="${product.stock}">10</td>
+        <td th:text="${product.description}">這是商品描述</td>
+        <td>
+            <div sec:authorize="!hasRole('ADMIN')">
+            <form th:action="@{/cart/items}" method="post">
+
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
+                <button type="submit">加入購物車</button>
+
+            </form>
+            </div>
+
+            <div sec:authorize="hasRole('ADMIN')" style="margin-top: 5px;">
+                <a th:href="@{/edit/{id}(id=${product.id})}">修改</a>
+                |
+                <a th:href="@{/delete/{id}(id=${product.id})}">刪除</a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

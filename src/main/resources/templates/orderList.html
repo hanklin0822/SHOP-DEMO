@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>我的訂單</title>
+
+  <style>
+    /* 1. 修改 body 樣式 */
+    body {
+        font-family: sans-serif;
+        background-color: #f8f9fa; /* 讓整個網頁有個淺灰色背景 */
+        margin: 0; /* 移除 body 的所有外距 */
+        padding: 0; /* 移除 body 的所有內距 */
+    }
+
+    /* 2. 新增 .container 樣式 (用來包裹主要內容) */
+    .container {
+        max-width: 1000px;
+        margin: 20px auto; /* 讓內容區置中 */
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 3. 底下的表格、標題樣式保持不變 */
+    h1 {
+        color: #333; /* 標題改回深灰色，更簡潔 */
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    thead {
+        background-color: #f2f2f2;
+    }
+
+    /* 4. 按鈕樣式保持不變 */
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+<div class="container">
+
+<h1>我的訂單列表</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>訂單編號</th>
+    <th>下單日期</th>
+    <th>總金額</th>
+    <th>訂單狀態</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order : ${orders}">
+    <td th:text="${order.orderId}">101</td>
+    <td th:text="${order.orderDate}">2025-10-16</td>
+    <td th:text="${order.totalAmount}">59000</td>
+    <td>處理中</td>
+    <td><a th:href="@{/orders/{id}(id=${order.orderId})}">查看詳情</a></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>

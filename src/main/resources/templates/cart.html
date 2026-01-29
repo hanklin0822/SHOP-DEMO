@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的購物車</title>
+
+    <style>
+        /* --- 基本樣式 --- */
+        body { font-family: sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+        h1 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        /* --- 表格樣式 --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 12px 15px; }
+        thead { background-color: #f2f2f2; }
+        tbody tr:nth-of-type(even) { background-color: #f8f9fa; }
+
+        /* --- 結帳區塊樣式 --- */
+
+        /* 1. 結帳總結區塊 (淺灰色長條) */
+        .cart-summary {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa; /* 淺灰色背景 */
+            border-radius: 5px;
+
+            display: flex; /* 使用 Flexbox 佈局 */
+            justify-content: flex-end; /* 關鍵：所有東西都推到右邊 (flex-end) */
+            align-items: center; /* 垂直置中 */
+        }
+
+        /* 2. 讓結帳按鈕和總金額之間有一點距離 */
+        .cart-summary form {
+            margin-right: 20px;
+        }
+
+        /* 3. 總金額的樣式 */
+        .total-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* 4. 結帳按鈕的樣式 */
+        .checkout-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff; /* 藍色 */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .checkout-button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<div class="container">
+    <h1>我的購物車</h1>
+
+    <div th:if="${cart.items.isEmpty()}">
+        <p>您的購物車是空的。</p>
+        <a th:href="@{/productlist}">快去逛逛吧！</a>
+    </div>
+
+    <div th:unless="${cart.items.isEmpty()}">
+
+        <table>
+            <thead>
+            <tr>
+                <th>商品名稱</th>
+                <th>單價</th>
+                <th>數量</th>
+                <th>小計</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cart.items.values()}">
+                <td th:text="${item.productName}">iPhone 16</td>
+                <td th:text="${item.price}">45000</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="${item.getSubtotal()}">45000</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="cart-summary">
+
+            <form th:action="@{/orders}" method="post">
+                <input type="hidden" name="userId" value="1">
+                <button type="submit" class="checkout-button">
+                前往結帳
+                </button>
+            </form>
+
+            <div class="total-text">
+                <span>總金額:</span>
+                <span th:text="${cart.getTotalAmount()}">45000</span>
+            </div>
+
+        </div>
+
+    </div> </div> </body>
+</html>

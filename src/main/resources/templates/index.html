@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+</head>
+<body>
+    <h1>商品列表</h1>
+    <a href="#" th:href="@{/create}">新增商品</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>商品名稱</th>
+            <th>價格</th>
+            <th>庫存</th>
+            <th>商品描述</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+        <td th:text="${product.id}">1</td>
+        <td th:text="${product.name}">商品名稱 A</td>
+        <td th:text="${product.price}">100</td>
+        <td th:text="${product.stock}">10</td>
+        <td th:text="${product.description}">這是商品描述</td>
+        <td>
+                <a th:href="@{/edit/{id}(id=${product.id})}">修改</a>
+
+                <a th:href="@{/delete/{id}(id=${product.id})}">刪除</a>
+        </td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
